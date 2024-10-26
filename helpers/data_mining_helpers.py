@@ -1,5 +1,6 @@
 import nltk
-
+import string
+from nltk.corpus import stopwords  # Import stopwords
 """
 Helper functions for data mining lab session 2018 Fall Semester
 Author: Elvis Saravia
@@ -26,13 +27,17 @@ def check_missing_values(row):
             counter+=1
     return ("The amoung of missing records is: ", counter)
 
-def tokenize_text(text, remove_stopwords=False):
+def tokenize_text(text, remove_stopwords=True):
     """
     Tokenize text using the nltk library
     """
+    
     tokens = []
+    stop_words = set(stopwords.words('english')) if remove_stopwords else set()
     for d in nltk.sent_tokenize(text, language='english'):
         for word in nltk.word_tokenize(d, language='english'):
+            word = word.lower()
             # filters here
-            tokens.append(word)
+            if word not in stop_words and word not in string.punctuation:
+                tokens.append(word)
     return tokens
